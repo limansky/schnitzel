@@ -1,3 +1,4 @@
+#[derive(Debug)]
 pub enum SchnitzelError {
     CompileError(String),
     RouteError(String),
