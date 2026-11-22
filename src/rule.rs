@@ -6,7 +6,9 @@ use std::{
 use globset::{Glob, GlobMatcher};
 
 use crate::{
-    Result, compiler::{Compiler, Item, copy}, route::{Route, no_route},
+    Result,
+    compiler::{Compiler, Item, copy},
+    route::{Route, no_route},
 };
 
 pub struct Rule {
@@ -48,10 +50,15 @@ impl Rules {
             if let Some(rule) = self.rules.iter().find(|r| r.pattern.is_match(normalized))
                 && let Some(out) = rule.route.route(normalized)
             {
-                let item = Item { path: normalized.to_path_buf(), content: fs::read_to_string(file)? };
+                let item = Item {
+                    path: normalized.to_path_buf(),
+                    content: fs::read_to_string(file)?,
+                };
                 let compiled = rule.compiler.compile(item)?;
                 let out = dst.join(out);
-                if let Some(parent) = out.parent() && !fs::exists(parent)? {
+                if let Some(parent) = out.parent()
+                    && !fs::exists(parent)?
+                {
                     fs::create_dir(parent)?;
                 }
 

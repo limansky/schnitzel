@@ -12,14 +12,16 @@ pub trait Compiler {
     fn compile(&self, item: Item) -> Result<Item>;
 
     fn then<C: Compiler>(self, next: C) -> Then<Self, C>
-        where Self: Sized 
+    where
+        Self: Sized,
     {
         Then(self, next)
     }
 }
 
-impl <F> Compiler for F
-    where F: Fn(Item) -> Result<Item>
+impl<F> Compiler for F
+where
+    F: Fn(Item) -> Result<Item>,
 {
     fn compile(&self, item: Item) -> Result<Item> {
         self(item)
@@ -42,8 +44,10 @@ pub fn copy(item: Item) -> Result<Item> {
 mod tests {
     use std::path::PathBuf;
 
-use crate::{Result, compiler::{Compiler, Item}};
-
+    use crate::{
+        Result,
+        compiler::{Compiler, Item},
+    };
 
     fn capitalize(mut item: Item) -> Result<Item> {
         item.content = item.content.to_uppercase();
@@ -57,7 +61,13 @@ use crate::{Result, compiler::{Compiler, Item}};
 
     #[test]
     fn then_test() {
-        let item = Item { path: PathBuf::from("foo.md"), content: "Test me now".to_owned() };
-        assert_eq!(capitalize.then(reverse).compile(item).unwrap().content, "WON EM TSET");
+        let item = Item {
+            path: PathBuf::from("foo.md"),
+            content: "Test me now".to_owned(),
+        };
+        assert_eq!(
+            capitalize.then(reverse).compile(item).unwrap().content,
+            "WON EM TSET"
+        );
     }
 }
