@@ -2,6 +2,9 @@
 name = "schnitzel"
 version = "0.1.0"
 edition = "2024"
+authors = [ "Mike Limansky" ]
+license = "Apache 2.0"
 
 [dependencies]
 globset = "0.4.21"
+pulldown-cmark = "0.13.6"
